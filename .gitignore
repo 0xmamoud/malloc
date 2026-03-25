@@ -1,0 +1,21 @@
+# Compiled files
+*.o
+obj/
+
+# Binary
+malloc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+
+# Archives
+*.tar.gz
+*.zip
+
+idea.md

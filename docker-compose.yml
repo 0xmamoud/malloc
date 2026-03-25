@@ -1,0 +1,13 @@
+services:
+  malloc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: malloc
+    working_dir: /malloc
+    volumes:
+      - .:/malloc
+    stdin_open: true
+    tty: true
+    init: true
+    command: /bin/bash
