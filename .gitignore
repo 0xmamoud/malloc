@@ -2,9 +2,6 @@
 *.o
 obj/
 
-# Binary
-malloc
-
 # IDE
 .vscode/
 .idea/

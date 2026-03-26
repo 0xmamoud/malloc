@@ -1,15 +1,25 @@
-NAME			= malloc
+# Host type detection
+ifeq ($(HOSTTYPE),)
+HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+
+NAME			= libft_malloc_$(HOSTTYPE).so
+LINK = libft_malloc.so
 
 # Compiler and flags
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -fPIC
+INCLUDES		= -I./includes
 
 # Directories
+SRC_DIR			= src
 OBJ_DIR			= obj
 
 # Source files
-SRCS			= main.c
-
+SRCS			= $(SRC_DIR)/malloc/malloc.c \
+					  $(SRC_DIR)/utils/ft_memcpy.c \
+					  $(SRC_DIR)/utils/ft_memset.c \
+					  $(SRC_DIR)/utils/ft_bzero.c
 # Object files
 OBJS			= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
@@ -22,17 +32,21 @@ RESET			= \033[0m
 DOCKER_PLATFORM ?= linux/amd64
 
 # Rules
-all: $(NAME)
+all: $(NAME) symlink
 
 $(NAME): $(OBJS)
 	@echo "$(GREEN)Creating $(NAME)...$(RESET)"
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -shared -o $(NAME)
 	@echo "$(GREEN)$(NAME) created successfully$(RESET)"
 
+symlink: $(NAME)
+	@ln -sf $(NAME) $(LINK)
+	@echo "$(GREEN)Symlink $(LINK) created for $(NAME)$(RESET)"
+
 $(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"
@@ -40,7 +54,7 @@ clean:
 
 fclean: clean
 	@echo "$(RED)Removing $(NAME)...$(RESET)"
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(LINK)
 
 re: fclean all
 
@@ -58,4 +72,4 @@ docker-shell:
 
 docker-rebuild: docker-down docker-build docker-up
 
-.PHONY: all clean fclean re docker-build docker-up docker-down docker-shell docker-rebuild
+.PHONY: all symlink clean fclean re
