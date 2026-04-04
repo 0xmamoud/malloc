@@ -2,10 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 int main() {
 
-    printf("hello world");
-    return 0;
+  printf("hello world");
+  return 0;
 }

@@ -1,6 +1,7 @@
 # Compiled files
 *.o
 obj/
+libft_*.so
 
 # IDE
 .vscode/

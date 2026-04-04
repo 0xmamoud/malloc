@@ -1,37 +1,28 @@
-# Host type detection
 ifeq ($(HOSTTYPE),)
 HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME			= libft_malloc_$(HOSTTYPE).so
+NAME = libft_malloc_$(HOSTTYPE).so
 LINK = libft_malloc.so
 
-# Compiler and flags
-CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -fPIC
-INCLUDES		= -I./includes
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -fPIC
+INCLUDES = -I./includes
 
-# Directories
-SRC_DIR			= src
-OBJ_DIR			= obj
+SRC_DIR = src
+OBJ_DIR = obj
 
-# Source files
-SRCS			= $(SRC_DIR)/malloc/malloc.c \
-					  $(SRC_DIR)/utils/ft_memcpy.c \
-					  $(SRC_DIR)/utils/ft_memset.c \
-					  $(SRC_DIR)/utils/ft_bzero.c
-# Object files
-OBJS			= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+SRCS = $(SRC_DIR)/malloc.c \
+	$(SRC_DIR)/utils.c
 
-# Colors
-GREEN			= \033[0;32m
-RED				= \033[0;31m
-RESET			= \033[0m
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
-# Docker
+GREEN = \033[0;32m
+RED = \033[0;31m
+RESET = \033[0m
+
 DOCKER_PLATFORM ?= linux/amd64
 
-# Rules
 all: $(NAME) symlink
 
 $(NAME): $(OBJS)
@@ -53,7 +44,7 @@ clean:
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@echo "$(RED)Removing $(NAME)...$(RESET)"
+	@echo "$(RED)Removing build artifacts...$(RESET)"
 	@rm -f $(NAME) $(LINK)
 
 re: fclean all
@@ -72,4 +63,4 @@ docker-shell:
 
 docker-rebuild: docker-down docker-build docker-up
 
-.PHONY: all symlink clean fclean re
+.PHONY: all symlink clean fclean re docker-build docker-up docker-down docker-shell docker-rebuild
