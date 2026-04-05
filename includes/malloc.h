@@ -33,6 +33,9 @@ typedef struct s_malloc {
 t_malloc *get_malloc_instance(void);
 t_block *get_first_block(t_heap *heap);
 
+// heap management
+t_heap *heap_new(size_t size);
+
 // utils
 void *ft_memset(void *b, int c, size_t len);
 void ft_bzero(void *s, size_t n);
