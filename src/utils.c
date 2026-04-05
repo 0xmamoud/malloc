@@ -41,3 +41,7 @@ size_t ft_strlen(const char *s) {
 
   return (len);
 }
+
+size_t align_size(size_t size) {
+  return ((size + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1));
+}

@@ -10,6 +10,7 @@
 #define SMALL_HEAP_SIZE (16 * getpagesize())
 #define SMALL_MAX (SMALL_HEAP_SIZE / 128)
 
+#define ALIGNMENT 8
 #define MIN_PAYLOAD 1
 
 typedef struct s_block {
@@ -55,5 +56,6 @@ void *ft_memset(void *b, int c, size_t len);
 void ft_bzero(void *s, size_t n);
 void *ft_memcpy(void *dst, const void *src, size_t n);
 size_t ft_strlen(const char *s);
+size_t align_size(size_t size);
 
 #endif
