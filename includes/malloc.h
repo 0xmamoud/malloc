@@ -36,6 +36,8 @@ t_block *get_first_block(t_heap *heap);
 // heap management
 t_heap *heap_new(size_t size);
 void heap_add(t_heap **head, t_heap *new_heap);
+void heap_remove(t_heap **head, t_heap *heap);
+void heap_free(t_heap *heap);
 
 // utils
 void *ft_memset(void *b, int c, size_t len);

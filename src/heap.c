@@ -33,3 +33,23 @@ void heap_add(t_heap **head, t_heap *new_heap) {
   current->next = new_heap;
   new_heap->prev = current;
 }
+
+void heap_remove(t_heap **head, t_heap *heap) {
+  if (!heap)
+    return;
+
+  if (heap->prev)
+    heap->prev->next = heap->next;
+  else
+    *head = heap->next;
+
+  if (heap->next)
+    heap->next->prev = heap->prev;
+}
+
+void heap_free(t_heap *heap) {
+  if (!heap)
+    return;
+
+  munmap(heap, heap->total_size);
+}
