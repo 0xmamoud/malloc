@@ -15,3 +15,21 @@ t_heap *heap_new(size_t size) {
 
   return heap;
 }
+
+void heap_add(t_heap **head, t_heap *new_heap) {
+  if (!new_heap)
+    return;
+
+  if (!*head) {
+    *head = new_heap;
+    return;
+  }
+
+  t_heap *current = *head;
+  while (current->next != NULL) {
+    current = current->next;
+  }
+
+  current->next = new_heap;
+  new_heap->prev = current;
+}
