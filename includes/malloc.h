@@ -10,6 +10,8 @@
 #define SMALL_HEAP_SIZE (16 * getpagesize())
 #define SMALL_MAX (SMALL_HEAP_SIZE / 128)
 
+#define MIN_PAYLOAD 1
+
 typedef struct s_block {
   struct s_block *prev;
   struct s_block *next;
@@ -30,14 +32,23 @@ typedef struct s_malloc {
   t_heap *large;
 } t_malloc;
 
-t_malloc *get_malloc_instance(void);
-t_block *get_first_block(t_heap *heap);
+// malloc management
+t_malloc *malloc_get_instance(void);
 
 // heap management
 t_heap *heap_new(size_t size);
 void heap_add(t_heap **head, t_heap *new_heap);
 void heap_remove(t_heap **head, t_heap *heap);
 void heap_free(t_heap *heap);
+
+// block management
+t_block *block_get_head(t_heap *heap);
+t_block *block_new(t_heap *heap, size_t size);
+t_block *block_first_fit(t_heap *heap, size_t size);
+void block_add(t_block **head, t_block *new_block);
+void block_remove(t_block **head, t_block *block);
+void block_split(t_block *block, size_t size);
+void block_coalesce(t_block *block);
 
 // utils
 void *ft_memset(void *b, int c, size_t len);
