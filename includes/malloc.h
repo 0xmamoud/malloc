@@ -40,6 +40,7 @@ extern t_malloc g_malloc;
 void *malloc(size_t size);
 void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size);
 void *malloc_alloc_large(size_t size);
+void show_alloc_mem(void);
 
 // heap management
 t_heap *heap_new(size_t size);
@@ -62,6 +63,12 @@ void ft_bzero(void *s, size_t n);
 void *ft_memcpy(void *dst, const void *src, size_t n);
 size_t ft_strlen(const char *s);
 size_t align_size(size_t size);
+void ft_putchar(char c);
+void ft_putstr(const char *s);
+void ft_putnbr(size_t n);
+void ft_puthex(uintptr_t value);
+void ft_putaddr(void *ptr);
+void ft_putendl(const char *s);
 void *block_to_ptr(t_block *block);
 t_block *block_from_ptr(void *ptr);
 
