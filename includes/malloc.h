@@ -25,7 +25,6 @@ typedef struct s_heap {
   struct s_heap *prev;
   struct s_heap *next;
   size_t total_size;
-  size_t free_size;
 } t_heap;
 
 typedef struct s_malloc {

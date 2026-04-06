@@ -11,7 +11,6 @@ t_heap *heap_new(size_t size) {
   heap->prev = NULL;
   heap->next = NULL;
   heap->total_size = size;
-  heap->free_size = size - sizeof(t_heap);
 
   return heap;
 }

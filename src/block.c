@@ -39,17 +39,14 @@ t_block *block_new(t_heap *heap, size_t size) {
   if (!heap)
     return NULL;
 
-  if (heap->free_size < sizeof(t_block) + size)
+  if (heap->total_size < sizeof(t_heap) + sizeof(t_block) + size)
     return NULL;
 
-  t_block *block =
-      (t_block *)((char *)heap + heap->total_size - heap->free_size);
+  t_block *block = block_get_head(heap);
   block->prev = NULL;
   block->next = NULL;
   block->size = size;
-  block->is_free = false;
-
-  heap->free_size -= (sizeof(t_block) + size);
+  block->is_free = true;
 
   return block;
 }

@@ -21,12 +21,18 @@ void *malloc(size_t size) {
 }
 
 void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size) {
+  t_block *block;
+  t_heap *current_heap = *heap;
 
-  t_block *block = block_first_fit(*heap, size);
-  if (block) {
-    block->is_free = false;
-    block_split(block, size);
-    return block_to_ptr(block);
+  while (current_heap) {
+    block = block_first_fit(current_heap, size);
+    if (block) {
+      block->is_free = false;
+      block_split(block, size);
+      return block_to_ptr(block);
+    }
+
+    current_heap = current_heap->next;
   }
 
   t_heap *new_heap = heap_new(heap_size);
@@ -35,9 +41,16 @@ void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size) {
 
   heap_add(heap, new_heap);
 
-  block = block_new(new_heap, size);
-  if (!block)
+  block = block_new(new_heap,
+                    new_heap->total_size - sizeof(t_heap) - sizeof(t_block));
+  if (!block) {
+    heap_remove(heap, new_heap);
+    heap_free(new_heap);
     return NULL;
+  }
+
+  block->is_free = false;
+  block_split(block, size);
 
   return block_to_ptr(block);
 }
@@ -52,8 +65,13 @@ void *malloc_alloc_large(size_t size) {
   heap_add(&g_malloc.large, heap);
 
   t_block *block = block_new(heap, size);
-  if (!block)
+  if (!block) {
+    heap_remove(&g_malloc.large, heap);
+    heap_free(heap);
     return NULL;
+  }
+
+  block->is_free = false;
 
   return block_to_ptr(block);
 }
