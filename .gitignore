@@ -1,6 +1,8 @@
 # Compiled files
 *.o
 obj/
+*.so
+libft_malloc_*.so
 libft_*.so
 
 # IDE

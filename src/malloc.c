@@ -1,2 +1,59 @@
 #include "malloc.h"
 
+t_malloc g_malloc;
+
+void *malloc(size_t size) {
+
+  if (size == 0)
+    return NULL;
+
+  size_t aligned_size = align_size(size);
+  if (aligned_size <= TINY_MAX) {
+    return malloc_alloc_from_zone(&g_malloc.tiny, TINY_HEAP_SIZE, aligned_size);
+  } else if (aligned_size <= SMALL_MAX) {
+    return malloc_alloc_from_zone(&g_malloc.small, SMALL_HEAP_SIZE,
+                                  aligned_size);
+  } else {
+    return malloc_alloc_large(aligned_size);
+  }
+
+  return NULL;
+}
+
+void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size) {
+
+  t_block *block = block_first_fit(*heap, size);
+  if (block) {
+    block->is_free = false;
+    block_split(block, size);
+    return block_to_ptr(block);
+  }
+
+  t_heap *new_heap = heap_new(heap_size);
+  if (!new_heap)
+    return NULL;
+
+  heap_add(heap, new_heap);
+
+  block = block_new(new_heap, size);
+  if (!block)
+    return NULL;
+
+  return block_to_ptr(block);
+}
+
+void *malloc_alloc_large(size_t size) {
+  size_t total_size = sizeof(t_heap) + sizeof(t_block) + size;
+
+  t_heap *heap = heap_new(total_size);
+  if (!heap)
+    return NULL;
+
+  heap_add(&g_malloc.large, heap);
+
+  t_block *block = block_new(heap, size);
+  if (!block)
+    return NULL;
+
+  return block_to_ptr(block);
+}

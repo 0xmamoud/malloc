@@ -11,9 +11,14 @@ INCLUDES = -I./includes
 
 SRC_DIR = src
 OBJ_DIR = obj
+TEST_DIR = tests
+TEST_BIN = $(TEST_DIR)/test_malloc
 
 SRCS = $(SRC_DIR)/malloc.c \
-	$(SRC_DIR)/utils.c
+	$(SRC_DIR)/utils.c \
+	$(SRC_DIR)/block.c \
+	$(SRC_DIR)/heap.c \
+	
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
@@ -24,6 +29,10 @@ RESET = \033[0m
 DOCKER_PLATFORM ?= linux/amd64
 
 all: $(NAME) symlink
+
+test: $(NAME) symlink $(TEST_BIN)
+	@echo "$(GREEN)Running tests with $(LINK)...$(RESET)"
+	@DYLD_INSERT_LIBRARIES=./$(LINK) DYLD_FORCE_FLAT_NAMESPACE=1 ./$(TEST_BIN)
 
 $(NAME): $(OBJS)
 	@echo "$(GREEN)Creating $(NAME)...$(RESET)"
@@ -39,13 +48,17 @@ $(OBJ_DIR)/%.o: %.c
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+$(TEST_BIN): $(TEST_DIR)/main.c
+	@echo "Compiling $<..."
+	@$(CC) -Wall -Wextra -Werror $(INCLUDES) $< -o $@
+
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
 	@echo "$(RED)Removing build artifacts...$(RESET)"
-	@rm -f $(NAME) $(LINK)
+	@rm -f $(NAME) $(LINK) $(TEST_BIN)
 
 re: fclean all
 
@@ -63,4 +76,4 @@ docker-shell:
 
 docker-rebuild: docker-down docker-build docker-up
 
-.PHONY: all symlink clean fclean re docker-build docker-up docker-down docker-shell docker-rebuild
+.PHONY: all symlink test clean fclean re docker-build docker-up docker-down docker-shell docker-rebuild

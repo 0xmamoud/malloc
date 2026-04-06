@@ -1,7 +1,5 @@
 #include "malloc.h"
 
-#define MIN_PAYLOAD 1
-
 static void block_merge_next(t_block *block) {
 
   if (!block || !block->next)
@@ -18,6 +16,18 @@ static void block_merge_next(t_block *block) {
     block->next->prev = block;
 }
 
+void *block_to_ptr(t_block *block) {
+  if (!block)
+    return NULL;
+  return (char *)block + sizeof(t_block);
+}
+
+t_block *block_from_ptr(void *ptr) {
+  if (!ptr)
+    return NULL;
+  return (t_block *)((char *)ptr - sizeof(t_block));
+}
+
 t_block *block_get_head(t_heap *heap) {
   if (!heap)
     return NULL;
@@ -28,10 +38,10 @@ t_block *block_get_head(t_heap *heap) {
 t_block *block_new(t_heap *heap, size_t size) {
   if (!heap)
     return NULL;
+
   if (heap->free_size < sizeof(t_block) + size)
     return NULL;
 
-  // Calculate the address of the new block
   t_block *block =
       (t_block *)((char *)heap + heap->total_size - heap->free_size);
   block->prev = NULL;

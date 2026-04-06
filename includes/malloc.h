@@ -3,15 +3,16 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <sys/mman.h>
+#include <unistd.h>
 
-#define TINY_HEAP_SIZE (4 * getpagesize())
-#define TINY_MAX (TINY_HEAP_SIZE / 128)
+#define TINY_HEAP_SIZE ((size_t)4 * (size_t)getpagesize())
+#define TINY_MAX (TINY_HEAP_SIZE / (size_t)128)
 
-#define SMALL_HEAP_SIZE (16 * getpagesize())
-#define SMALL_MAX (SMALL_HEAP_SIZE / 128)
+#define SMALL_HEAP_SIZE ((size_t)16 * (size_t)getpagesize())
+#define SMALL_MAX (SMALL_HEAP_SIZE / (size_t)128)
 
 #define ALIGNMENT 8
-#define MIN_PAYLOAD 1
+#define MIN_PAYLOAD 8
 
 typedef struct s_block {
   struct s_block *prev;
@@ -33,8 +34,12 @@ typedef struct s_malloc {
   t_heap *large;
 } t_malloc;
 
+extern t_malloc g_malloc;
+
 // malloc management
-t_malloc *malloc_get_instance(void);
+void *malloc(size_t size);
+void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size);
+void *malloc_alloc_large(size_t size);
 
 // heap management
 t_heap *heap_new(size_t size);
@@ -57,5 +62,7 @@ void ft_bzero(void *s, size_t n);
 void *ft_memcpy(void *dst, const void *src, size_t n);
 size_t ft_strlen(const char *s);
 size_t align_size(size_t size);
+void *block_to_ptr(t_block *block);
+t_block *block_from_ptr(void *ptr);
 
 #endif
