@@ -7,6 +7,9 @@ void *malloc(size_t size) {
   if (size == 0)
     return NULL;
 
+  if (size > SIZE_MAX - (ALIGNMENT - 1))
+    return NULL;
+
   size_t aligned_size = align_size(size);
   if (aligned_size <= TINY_MAX) {
     return malloc_alloc_from_zone(&g_malloc.tiny, TINY_HEAP_SIZE, aligned_size);
@@ -56,6 +59,9 @@ void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size) {
 }
 
 void *malloc_alloc_large(size_t size) {
+  if (size > SIZE_MAX - sizeof(t_heap) - sizeof(t_block))
+    return NULL;
+
   size_t total_size = sizeof(t_heap) + sizeof(t_block) + size;
 
   t_heap *heap = heap_new(total_size);
