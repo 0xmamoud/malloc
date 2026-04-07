@@ -15,6 +15,26 @@ t_heap *heap_new(size_t size) {
   return heap;
 }
 
+t_heap *heap_get_from_block(t_block *block) {
+  if (!block)
+    return NULL;
+
+  while (block->prev)
+    block = block->prev;
+
+  return (t_heap *)((char *)block - sizeof(t_heap));
+}
+
+t_heap *heap_get_head(t_heap *heap) {
+  if (!heap)
+    return NULL;
+
+  while (heap->prev)
+    heap = heap->prev;
+
+  return heap;
+}
+
 void heap_add(t_heap **head, t_heap *new_heap) {
   if (!new_heap)
     return;

@@ -40,6 +40,7 @@ extern t_malloc g_malloc;
 void *malloc(size_t size);
 void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size);
 void *malloc_alloc_large(size_t size);
+void free(void *ptr);
 void show_alloc_mem(void);
 
 // heap management
@@ -47,6 +48,8 @@ t_heap *heap_new(size_t size);
 void heap_add(t_heap **head, t_heap *new_heap);
 void heap_remove(t_heap **head, t_heap *heap);
 void heap_free(t_heap *heap);
+t_heap *heap_get_from_block(t_block *block);
+t_heap *heap_get_head(t_heap *heap);
 
 // block management
 t_block *block_get_head(t_heap *heap);

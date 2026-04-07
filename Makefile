@@ -19,6 +19,7 @@ SRCS = $(SRC_DIR)/malloc.c \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/block.c \
 	$(SRC_DIR)/heap.c \
+	$(SRC_DIR)/free.c \
 	$(SRC_DIR)/show_alloc_mem.c \
 	
 
