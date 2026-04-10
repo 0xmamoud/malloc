@@ -48,7 +48,7 @@ static void test_many_boundary_crossing_allocations(void) {
               "stress: repeated allocations across zone thresholds succeed");
 }
 
-void run_stress_tests(void) {
+void run_malloc_stress_tests(void) {
   printf("[stress]\n");
   test_many_small_allocations_remain_usable();
   test_many_boundary_crossing_allocations();

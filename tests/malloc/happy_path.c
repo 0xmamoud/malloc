@@ -72,7 +72,7 @@ static void test_sequential_blocks_keep_independent_patterns(void) {
               "happy_path: right block pattern remains intact");
 }
 
-void run_happy_path_tests(void) {
+void run_malloc_happy_path_tests(void) {
   printf("[happy_path]\n");
   test_small_allocations_are_usable();
   test_multiple_allocations_are_distinct();

@@ -13,7 +13,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 TEST_DIR = tests
 TEST_BIN = $(TEST_DIR)/test_malloc
-TEST_SRCS = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/malloc/*.c)
+TEST_SRCS = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/malloc/*.c) \
+	$(wildcard $(TEST_DIR)/free/*.c)
 
 SRCS = $(SRC_DIR)/malloc.c \
 	$(SRC_DIR)/utils.c \

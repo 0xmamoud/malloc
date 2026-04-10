@@ -38,7 +38,7 @@ static void test_zone_boundaries_are_allocatable(void) {
               "edge_cases: SMALL_MAX + 1 allocation succeeds");
 }
 
-void run_edge_case_tests(void) {
+void run_malloc_edge_case_tests(void) {
   printf("[edge_cases]\n");
   test_zero_size_returns_null();
   test_oversized_requests_fail_cleanly();

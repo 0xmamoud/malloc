@@ -66,7 +66,7 @@ static void test_zone_routing_matches_thresholds(void) {
               "invariants: large request stays in large-sized block");
 }
 
-void run_invariant_tests(void) {
+void run_malloc_invariant_tests(void) {
   printf("[invariants]\n");
   test_returned_pointers_are_aligned();
   test_active_regions_do_not_overlap();
