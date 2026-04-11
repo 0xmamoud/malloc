@@ -36,12 +36,13 @@ typedef struct s_malloc {
 
 extern t_malloc g_malloc;
 
-// malloc management
+// allocation management
 void *malloc(size_t size);
 void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size);
 void *malloc_alloc_large(size_t size);
 void free(void *ptr);
 void show_alloc_mem(void);
+void *realloc(void *ptr, size_t size);
 
 // heap management
 t_heap *heap_new(size_t size);
