@@ -29,6 +29,7 @@ int main(void) {
 
   run_free_invariant_tests();
   test_reset_allocator();
+  printf("\n");
 
   // printf("\n");
   // show_alloc_mem();

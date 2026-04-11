@@ -7,11 +7,22 @@ static size_t min_size(size_t a, size_t b) {
 }
 
 void *realloc(void *ptr, size_t size) {
+  void *new_ptr;
+
+  pthread_mutex_lock(&g_malloc_mutex);
+  new_ptr = realloc_impl(ptr, size);
+  pthread_mutex_unlock(&g_malloc_mutex);
+  return new_ptr;
+}
+
+void *realloc_impl(void *ptr, size_t size) {
+  void *new_ptr;
+
   if (!ptr)
-    return malloc(size);
+    return malloc_impl(size);
 
   if (size == 0) {
-    free(ptr);
+    free_impl(ptr);
     return NULL;
   }
 
@@ -38,11 +49,11 @@ void *realloc(void *ptr, size_t size) {
     return ptr;
   }
 
-  void *new_ptr = malloc(size);
+  new_ptr = malloc_impl(size);
   if (!new_ptr)
     return NULL;
 
   ft_memcpy(new_ptr, ptr, min_size(block->size, size));
-  free(ptr);
+  free_impl(ptr);
   return new_ptr;
 }

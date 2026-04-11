@@ -6,7 +6,7 @@ NAME = libft_malloc_$(HOSTTYPE).so
 LINK = libft_malloc.so
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fPIC
+CFLAGS = -Wall -Wextra -Werror -fPIC -pthread
 INCLUDES = -I./includes
 
 SRC_DIR = src
@@ -58,7 +58,7 @@ $(OBJ_DIR)/%.o: %.c
 
 $(TEST_BIN): $(TEST_SRCS) $(LINK)
 	@echo "Compiling test sources..."
-	@$(CC) -Wall -Wextra -Werror $(INCLUDES) $(TEST_SRCS) ./$(LINK) -o $@
+	@$(CC) -Wall -Wextra -Werror -pthread $(INCLUDES) $(TEST_SRCS) ./$(LINK) -o $@
 
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"

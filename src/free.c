@@ -1,6 +1,12 @@
 #include "malloc.h"
 
 void free(void *ptr) {
+  pthread_mutex_lock(&g_malloc_mutex);
+  free_impl(ptr);
+  pthread_mutex_unlock(&g_malloc_mutex);
+}
+
+void free_impl(void *ptr) {
   if (!ptr)
     return;
 

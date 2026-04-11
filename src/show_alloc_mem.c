@@ -53,10 +53,12 @@ static size_t print_zone(const char *name, t_heap *head) {
 void show_alloc_mem(void) {
   size_t total = 0;
 
+  pthread_mutex_lock(&g_malloc_mutex);
   total += print_zone("TINY", g_malloc.tiny);
   total += print_zone("SMALL", g_malloc.small);
   total += print_zone("LARGE", g_malloc.large);
   ft_putstr("Total : ");
   ft_putnbr(total);
   ft_putendl(" bytes");
+  pthread_mutex_unlock(&g_malloc_mutex);
 }

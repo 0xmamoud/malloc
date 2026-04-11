@@ -1,5 +1,6 @@
 #ifndef MALLOC_H
 #define MALLOC_H
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -35,13 +36,17 @@ typedef struct s_malloc {
 } t_malloc;
 
 extern t_malloc g_malloc;
+extern pthread_mutex_t g_malloc_mutex;
 
 // allocation management
 void *malloc(size_t size);
 void *calloc(size_t nmemb, size_t size);
+void *malloc_impl(size_t size);
+void *realloc_impl(void *ptr, size_t size);
 void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size);
 void *malloc_alloc_large(size_t size);
 void free(void *ptr);
+void free_impl(void *ptr);
 void show_alloc_mem(void);
 void *realloc(void *ptr, size_t size);
 

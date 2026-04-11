@@ -1,11 +1,14 @@
 #include "malloc.h"
 
 void *calloc(size_t nmemb, size_t size) {
+  size_t total_size;
+  void *ptr;
+
   if (nmemb != 0 && size > SIZE_MAX / nmemb)
     return NULL;
 
-  size_t total_size = nmemb * size;
-  void *ptr = malloc(total_size);
+  total_size = nmemb * size;
+  ptr = malloc(total_size);
   if (!ptr)
     return NULL;
 

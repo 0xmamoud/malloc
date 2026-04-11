@@ -1,8 +1,19 @@
 #include "malloc.h"
 
 t_malloc g_malloc;
+pthread_mutex_t g_malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *malloc(size_t size) {
+  void *ptr;
+
+  pthread_mutex_lock(&g_malloc_mutex);
+  ptr = malloc_impl(size);
+  pthread_mutex_unlock(&g_malloc_mutex);
+
+  return ptr;
+}
+
+void *malloc_impl(size_t size) {
 
   if (size == 0)
     return NULL;
