@@ -1,4 +1,5 @@
 #include "free/test_free.h"
+#include "malloc.h"
 #include "malloc/test_malloc.h"
 #include <stdio.h>
 
@@ -32,7 +33,7 @@ int main(void) {
   printf("\n");
 
   // printf("\n");
-  // show_alloc_mem();
+  // show_alloc_mem_ex();
 
   printf("\n================ ALL TESTS PASSED ================\n");
   return 0;

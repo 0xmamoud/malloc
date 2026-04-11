@@ -13,7 +13,29 @@ static t_heap *find_next_heap(t_heap *head, uintptr_t min_addr) {
   return next;
 }
 
-static size_t print_heap_blocks(t_heap *heap) {
+static void print_block_hexdump(t_block *block) {
+  unsigned char *data;
+  size_t i;
+  size_t line_size;
+
+  data = (unsigned char *)block_to_ptr(block);
+  i = 0;
+  while (i < block->size) {
+    ft_putstr("    ");
+    line_size = 0;
+    while (i < block->size && line_size < 16) {
+      if (data[i] < 16)
+        ft_putchar('0');
+      ft_puthex(data[i]);
+      ft_putchar(' ');
+      i++;
+      line_size++;
+    }
+    ft_putchar('\n');
+  }
+}
+
+static size_t print_heap_blocks(t_heap *heap, bool extended) {
   t_block *block = block_get_head(heap);
   size_t total = 0;
 
@@ -25,6 +47,8 @@ static size_t print_heap_blocks(t_heap *heap) {
       ft_putstr(" : ");
       ft_putnbr(block->size);
       ft_putendl(" bytes");
+      if (extended)
+        print_block_hexdump(block);
       total += block->size;
     }
     block = block->next;
@@ -32,7 +56,7 @@ static size_t print_heap_blocks(t_heap *heap) {
   return total;
 }
 
-static size_t print_zone(const char *name, t_heap *head) {
+static size_t print_zone(const char *name, t_heap *head, bool extended) {
   t_heap *heap = NULL;
   uintptr_t min_addr = 0;
   size_t total = 0;
@@ -43,22 +67,26 @@ static size_t print_zone(const char *name, t_heap *head) {
     ft_putstr(" : ");
     ft_putaddr(heap);
     ft_putchar('\n');
-    total += print_heap_blocks(heap);
+    total += print_heap_blocks(heap, extended);
     min_addr = (uintptr_t)heap;
     heap = find_next_heap(head, min_addr);
   }
   return total;
 }
 
-void show_alloc_mem(void) {
+static void show_alloc_mem_impl(bool extended) {
   size_t total = 0;
 
   pthread_mutex_lock(&g_malloc_mutex);
-  total += print_zone("TINY", g_malloc.tiny);
-  total += print_zone("SMALL", g_malloc.small);
-  total += print_zone("LARGE", g_malloc.large);
+  total += print_zone("TINY", g_malloc.tiny, extended);
+  total += print_zone("SMALL", g_malloc.small, extended);
+  total += print_zone("LARGE", g_malloc.large, extended);
   ft_putstr("Total : ");
   ft_putnbr(total);
   ft_putendl(" bytes");
   pthread_mutex_unlock(&g_malloc_mutex);
 }
+
+void show_alloc_mem(void) { show_alloc_mem_impl(false); }
+
+void show_alloc_mem_ex(void) { show_alloc_mem_impl(true); }

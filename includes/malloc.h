@@ -48,6 +48,7 @@ void *malloc_alloc_large(size_t size);
 void free(void *ptr);
 void free_impl(void *ptr);
 void show_alloc_mem(void);
+void show_alloc_mem_ex(void);
 void *realloc(void *ptr, size_t size);
 
 // heap management
