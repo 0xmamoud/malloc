@@ -17,6 +17,7 @@ TEST_SRCS = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/malloc/*.c) \
 	$(wildcard $(TEST_DIR)/free/*.c)
 
 SRCS = $(SRC_DIR)/malloc.c \
+	$(SRC_DIR)/calloc.c \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/block.c \
 	$(SRC_DIR)/heap.c \

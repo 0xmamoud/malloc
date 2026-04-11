@@ -38,6 +38,7 @@ extern t_malloc g_malloc;
 
 // allocation management
 void *malloc(size_t size);
+void *calloc(size_t nmemb, size_t size);
 void *malloc_alloc_from_zone(t_heap **heap, size_t heap_size, size_t size);
 void *malloc_alloc_large(size_t size);
 void free(void *ptr);
