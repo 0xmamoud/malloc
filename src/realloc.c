@@ -10,7 +10,9 @@ void *realloc(void *ptr, size_t size) {
   void *new_ptr;
 
   pthread_mutex_lock(&g_malloc_mutex);
+  debug_init();
   new_ptr = realloc_impl(ptr, size);
+  debug_realloc(ptr, size, new_ptr);
   pthread_mutex_unlock(&g_malloc_mutex);
   return new_ptr;
 }

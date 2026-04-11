@@ -15,6 +15,8 @@ TEST_DIR = tests
 TEST_BIN = $(TEST_DIR)/test_malloc
 TEST_SRCS = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/malloc/*.c) \
 	$(wildcard $(TEST_DIR)/free/*.c)
+TEST_ENV = MALLOC_DEBUG=1
+TEST_LIB_ENV = LD_PRELOAD=./$(LINK)
 
 SRCS = $(SRC_DIR)/malloc.c \
 	$(SRC_DIR)/calloc.c \
@@ -23,6 +25,7 @@ SRCS = $(SRC_DIR)/malloc.c \
 	$(SRC_DIR)/heap.c \
 	$(SRC_DIR)/free.c \
 	$(SRC_DIR)/realloc.c \
+	$(SRC_DIR)/debug.c \
 	$(SRC_DIR)/show_alloc_mem.c \
 	
 
@@ -39,7 +42,7 @@ all: $(NAME) symlink
 test: fclean $(NAME) symlink $(TEST_BIN)
 	@echo "$(GREEN)Running tests with $(LINK)...$(RESET)"
 	@printf "\n$(GREEN)================ TEST RUN ================\n$(RESET)"
-	@DYLD_INSERT_LIBRARIES=./$(LINK) DYLD_FORCE_FLAT_NAMESPACE=1 ./$(TEST_BIN)
+	@$(TEST_ENV) $(TEST_LIB_ENV) ./$(TEST_BIN)
 	@printf "$(GREEN)==========================================\n$(RESET)"
 
 $(NAME): $(OBJS)

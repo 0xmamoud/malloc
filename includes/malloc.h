@@ -33,6 +33,8 @@ typedef struct s_malloc {
   t_heap *tiny;
   t_heap *small;
   t_heap *large;
+  bool debug_enabled;
+  bool debug_initialized;
 } t_malloc;
 
 extern t_malloc g_malloc;
@@ -67,6 +69,8 @@ void block_add(t_block **head, t_block *new_block);
 void block_remove(t_block **head, t_block *block);
 void block_split(t_block *block, size_t size);
 void block_coalesce(t_block *block);
+void *block_to_ptr(t_block *block);
+t_block *block_from_ptr(void *ptr);
 
 // utils
 void *ft_memset(void *b, int c, size_t len);
@@ -80,7 +84,11 @@ void ft_putnbr(size_t n);
 void ft_puthex(uintptr_t value);
 void ft_putaddr(void *ptr);
 void ft_putendl(const char *s);
-void *block_to_ptr(t_block *block);
-t_block *block_from_ptr(void *ptr);
+
+// debug
+void debug_init(void);
+void debug_malloc(size_t size, void *result);
+void debug_free(void *ptr);
+void debug_realloc(void *ptr, size_t size, void *result);
 
 #endif

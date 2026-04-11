@@ -2,6 +2,8 @@
 
 void free(void *ptr) {
   pthread_mutex_lock(&g_malloc_mutex);
+  debug_init();
+  debug_free(ptr);
   free_impl(ptr);
   pthread_mutex_unlock(&g_malloc_mutex);
 }

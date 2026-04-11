@@ -7,7 +7,9 @@ void *malloc(size_t size) {
   void *ptr;
 
   pthread_mutex_lock(&g_malloc_mutex);
+  debug_init();
   ptr = malloc_impl(size);
+  debug_malloc(size, ptr);
   pthread_mutex_unlock(&g_malloc_mutex);
 
   return ptr;
