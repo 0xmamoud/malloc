@@ -124,11 +124,11 @@ static void test_realloc_crosses_zone_thresholds(void) {
 
 void run_edge_case_tests(void) {
   printf("[edge_cases]\n");
-  run_test_case(test_malloc_zero_returns_null);
-  run_test_case(test_realloc_null_behaves_like_malloc);
-  run_test_case(test_realloc_zero_behaves_like_free);
-  run_test_case(test_oversized_malloc_fails_cleanly);
-  run_test_case(test_oversized_realloc_fails_without_corrupting_source);
-  run_test_case(test_zone_boundaries_are_supported);
-  run_test_case(test_realloc_crosses_zone_thresholds);
+  run_in_child(test_malloc_zero_returns_null);
+  run_in_child(test_realloc_null_behaves_like_malloc);
+  run_in_child(test_realloc_zero_behaves_like_free);
+  run_in_child(test_oversized_malloc_fails_cleanly);
+  run_in_child(test_oversized_realloc_fails_without_corrupting_source);
+  run_in_child(test_zone_boundaries_are_supported);
+  run_in_child(test_realloc_crosses_zone_thresholds);
 }

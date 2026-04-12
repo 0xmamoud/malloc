@@ -106,8 +106,8 @@ static void test_freeing_middle_large_keeps_other_large_alive(void) {
 
 void run_invariant_tests(void) {
   printf("[invariants]\n");
-  run_test_case(test_returned_pointers_are_aligned);
-  run_test_case(test_active_regions_do_not_overlap);
-  run_test_case(test_adjacent_frees_merge_from_first_block);
-  run_test_case(test_freeing_middle_large_keeps_other_large_alive);
+  run_in_child(test_returned_pointers_are_aligned);
+  run_in_child(test_active_regions_do_not_overlap);
+  run_in_child(test_adjacent_frees_merge_from_first_block);
+  run_in_child(test_freeing_middle_large_keeps_other_large_alive);
 }

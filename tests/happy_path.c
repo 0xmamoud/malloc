@@ -161,10 +161,10 @@ static void test_realloc_shrink_preserves_prefix(void) {
 
 void run_happy_path_tests(void) {
   printf("[happy_path]\n");
-  run_test_case(test_basic_allocations_are_usable);
-  run_test_case(test_neighbor_blocks_keep_independent_patterns);
-  run_test_case(test_free_then_reuse_preserves_live_neighbors);
-  run_test_case(test_adjacent_frees_create_usable_larger_space);
-  run_test_case(test_realloc_grow_preserves_prefix);
-  run_test_case(test_realloc_shrink_preserves_prefix);
+  run_in_child(test_basic_allocations_are_usable);
+  run_in_child(test_neighbor_blocks_keep_independent_patterns);
+  run_in_child(test_free_then_reuse_preserves_live_neighbors);
+  run_in_child(test_adjacent_frees_create_usable_larger_space);
+  run_in_child(test_realloc_grow_preserves_prefix);
+  run_in_child(test_realloc_shrink_preserves_prefix);
 }
