@@ -103,6 +103,20 @@ static void test_adjacent_frees_create_usable_larger_space(void) {
   free(merged);
 }
 
+static void test_free_last_tiny_blocks_releases_heap(void) {
+  void *ptr;
+
+  ptr = malloc(64);
+  test_assert(ptr != NULL, "happy_path: single tiny allocation succeeds");
+  test_assert(g_malloc.tiny != NULL,
+              "happy_path: single tiny allocation creates a heap");
+
+  free(ptr);
+
+  test_assert(g_malloc.tiny == NULL,
+              "happy_path: freeing the last tiny block releases its heap");
+}
+
 static void test_realloc_grow_preserves_prefix(void) {
   unsigned char *ptr;
   size_t i;
@@ -165,6 +179,7 @@ void run_happy_path_tests(void) {
   run_in_child(test_neighbor_blocks_keep_independent_patterns);
   run_in_child(test_free_then_reuse_preserves_live_neighbors);
   run_in_child(test_adjacent_frees_create_usable_larger_space);
+  run_in_child(test_free_last_tiny_blocks_releases_heap);
   run_in_child(test_realloc_grow_preserves_prefix);
   run_in_child(test_realloc_shrink_preserves_prefix);
 }
