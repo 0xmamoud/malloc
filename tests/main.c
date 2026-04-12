@@ -12,6 +12,8 @@ int main(void) {
   printf("[PASS] suite: invariants\n\n");
   run_in_child(run_stress_tests);
   printf("[PASS] suite: stress\n\n");
+  run_in_child(run_show_malloc_tests);
+  printf("[PASS] suite: show_malloc\n\n");
 
   printf("\n================ ALL TESTS PASSED ================\n");
   return 0;

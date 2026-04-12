@@ -25,6 +25,7 @@ void run_happy_path_tests(void);
 void run_edge_case_tests(void);
 void run_invariant_tests(void);
 void run_stress_tests(void);
+void run_show_malloc_tests(void);
 void run_in_child(t_test_suite_fn fn);
 int test_region_matches(const unsigned char *ptr, size_t size,
                         unsigned char value);
