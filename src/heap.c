@@ -70,5 +70,8 @@ void heap_free(t_heap *heap) {
   if (!heap)
     return;
 
-  munmap(heap, heap->total_size);
+  if (munmap(heap, heap->total_size) == -1) {
+    write(STDERR_FILENO, "Error: munmap failed\n", 22);
+    _exit(EXIT_FAILURE);
+  }
 }

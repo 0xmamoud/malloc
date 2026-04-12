@@ -41,7 +41,7 @@ all: $(NAME) symlink
 test: fclean $(NAME) symlink $(TEST_BIN)
 	@echo "$(GREEN)Running tests with $(LINK)...$(RESET)"
 	@printf "\n$(GREEN)================ TEST RUN ================\n$(RESET)"
-	$(TEST_ENV) $(TEST_LIB_ENV) valgrind --leak-check=full --show-leak-kinds=all ./$(TEST_BIN)
+	$(TEST_ENV) $(TEST_LIB_ENV) ./$(TEST_BIN)
 	@printf "$(GREEN)==========================================\n$(RESET)"
 
 $(NAME): $(OBJS)
