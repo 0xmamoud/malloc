@@ -6,16 +6,15 @@ NAME = libft_malloc_$(HOSTTYPE).so
 LINK = libft_malloc.so
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fPIC -pthread
+CFLAGS = -Wall -Wextra -Werror -fPIC -pthread -g
 INCLUDES = -I./includes
 
 SRC_DIR = src
 OBJ_DIR = obj
 TEST_DIR = tests
 TEST_BIN = $(TEST_DIR)/test_malloc
-TEST_SRCS = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/malloc/*.c) \
-	$(wildcard $(TEST_DIR)/free/*.c)
-TEST_ENV = MALLOC_DEBUG=1
+TEST_SRCS = $(wildcard $(TEST_DIR)/*.c)
+TEST_ENV = MALLOC_DEBUG=0
 TEST_LIB_ENV = LD_PRELOAD=./$(LINK)
 
 SRCS = $(SRC_DIR)/malloc.c \
@@ -42,7 +41,7 @@ all: $(NAME) symlink
 test: fclean $(NAME) symlink $(TEST_BIN)
 	@echo "$(GREEN)Running tests with $(LINK)...$(RESET)"
 	@printf "\n$(GREEN)================ TEST RUN ================\n$(RESET)"
-	@$(TEST_ENV) $(TEST_LIB_ENV) ./$(TEST_BIN)
+	$(TEST_ENV) $(TEST_LIB_ENV) valgrind --leak-check=full --show-leak-kinds=all ./$(TEST_BIN)
 	@printf "$(GREEN)==========================================\n$(RESET)"
 
 $(NAME): $(OBJS)

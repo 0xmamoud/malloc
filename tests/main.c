@@ -1,39 +1,13 @@
-#include "free/test_free.h"
-#include "malloc.h"
-#include "malloc/test_malloc.h"
+#include "test.h"
 #include <stdio.h>
 
 int main(void) {
-  run_malloc_happy_path_tests();
-  test_reset_allocator();
-  printf("\n");
+  setvbuf(stdout, NULL, _IONBF, 0);
 
-  run_malloc_edge_case_tests();
-  test_reset_allocator();
-  printf("\n");
-
-  run_malloc_invariant_tests();
-  test_reset_allocator();
-  printf("\n");
-
-  run_malloc_stress_tests();
-  test_reset_allocator();
-  printf("\n");
-
-  run_free_happy_path_tests();
-  test_reset_allocator();
-  printf("\n");
-
-  run_free_edge_case_tests();
-  test_reset_allocator();
-  printf("\n");
-
-  run_free_invariant_tests();
-  test_reset_allocator();
-  printf("\n");
-
-  // printf("\n");
-  // show_alloc_mem_ex();
+  run_test_suite("happy_path", run_happy_path_tests);
+  run_test_suite("edge_cases", run_edge_case_tests);
+  run_test_suite("invariants", run_invariant_tests);
+  run_test_suite("stress", run_stress_tests);
 
   printf("\n================ ALL TESTS PASSED ================\n");
   return 0;
